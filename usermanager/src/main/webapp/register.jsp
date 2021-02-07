@@ -3,7 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title>注册</title>
-    <link rel="stylesheet" href="css/register.css">
+    <%
+        String path = request.getContextPath();
+        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/css/register.css";
+    %>
+    <link rel="stylesheet" href="<%=basePath%>">
 </head>
 <body>
 <div class="rg_layout">
@@ -15,7 +19,7 @@
         </div>
         <div class="rg_form_center">
             <!--注册表单-->
-            <form id="registerForm" action="register_ok.jsp" method="post">
+            <form id="registerForm" action="${pageContext.request.contextPath}/user/register" method="post">
                 <!--提交处理请求的标识符-->
                 <input type="hidden" name="action" value="register">
                 <table style="margin-top: 25px;width: 558px">
@@ -58,7 +62,7 @@
                         </td>
                         <td class="td_right check">
                             <input type="submit" class="submit" value="注册">
-                            <span id="msg" style="color: red;"></span>
+                            <span id="msg" style="color: red;">${resultInfo.message}</span>
                         </td>
                     </tr>
                 </table>
