@@ -1,9 +1,11 @@
 package xyz.itclay.usermanager.web.servlet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.beanutils.BeanUtils;
 import xyz.itclay.usermanager.domain.ResultInfo;
 import xyz.itclay.usermanager.domain.User;
 import xyz.itclay.usermanager.service.UserService;
+import xyz.itclay.usermanager.utils.RandomCodeUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,6 +29,14 @@ public class UserServlet extends BaseServlet {
      * @date 2021/2/7 14:11
      **/
     public void register(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        比较用户填写的验证码和发送手机的验证码做对比
+        String randomNumber = (String) req.getSession().getAttribute("randomNumber");
+        String smsCode = req.getParameter("smsCode");
+        if (smsCode == null || !smsCode.equals(randomNumber)) {
+            req.setAttribute("msg", "验证码错误!");
+            req.getRequestDispatcher("/register.jsp").forward(req, resp);
+            return;
+        }
         try {
 //    接收请求参数
             Map<String, String[]> map = req.getParameterMap();
@@ -46,5 +56,72 @@ public class UserServlet extends BaseServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 验证用户名
+     *
+     * @author ZhangSenmiao
+     * @date 2021/2/7 16:23
+     **/
+    public void findByUsername(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        获取请求参数
+        String username = req.getParameter("username");
+        System.out.println(username);
+        if (username != null) {
+//        调用service，校验用户名是否存在，返回resultInfo
+            ResultInfo resultInfo = userService.findByUsername(username);
+            //将resultInfo转为json
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(resultInfo);
+            //响应给客户端
+            resp.setContentType("application/json;charset=utf-8");
+            resp.getWriter().write(json);
+        }
+    }
+
+    /**
+     * 验证手机号
+     *
+     * @author ZhangSenmiao
+     * @date 2021/2/7 16:23
+     **/
+    public void findByTelephone(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        获取请求参数
+        String telephone = req.getParameter("telephone");
+//        调用service，校验手机号是否存在，返回resultInfo
+        ResultInfo resultInfo = userService.findByTelePhone(telephone);
+        //将resultInfo转为json
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(resultInfo);
+        //响应给客户端
+        resp.setContentType("application/json;charset=utf-8");
+        resp.getWriter().write(json);
+
+    }
+
+    /**
+     * 发送短信验证码
+     *
+     * @author ZhangSenmiao
+     * @date 2021/2/8 22:19
+     **/
+    public void sendSms(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        接收请求参数
+        String telephone = req.getParameter("telephone");
+//        获取验证码
+        String randomNumber = RandomCodeUtils.randomNumber(6);
+//        调用service发送短信，得到resultInfo信息
+        ResultInfo resultInfo = userService.sendSms(telephone, randomNumber);
+//        将随机生成的验证码放到session域中
+        if (resultInfo.getSuccess()) {
+            req.getSession().setAttribute("randomNumber", randomNumber);
+        }
+        //将resultInfo转为json
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(resultInfo);
+        //响应给客户端
+        resp.setContentType("application/json;charset=utf-8");
+        resp.getWriter().write(json);
     }
 }
