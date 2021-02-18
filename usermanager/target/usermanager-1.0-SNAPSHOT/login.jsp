@@ -3,7 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title>登录</title>
-    <link rel="stylesheet" href="css/register.css">
+    <%
+        String path = request.getContextPath();
+        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/css/register.css";
+    %>
+    <link rel="stylesheet" href="<%=basePath%>">
 </head>
 <body>
 <div class="rg_layout">
@@ -15,7 +19,7 @@
         </div>
         <div class="rg_form_center">
             <!--注册表单-->
-            <form id="registerForm" action="register_ok.jsp" method="post">
+            <form id="pwdLoginForm" action="${pageContext.request.contextPath}/user/pwdLogin" method="post">
                 <!--提交处理请求的标识符-->
                 <input type="hidden" name="action" value="register">
                 <table style="margin-top: 25px;width: 558px">
@@ -37,29 +41,27 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="td_left">
-                            <label for="smsCode">验证码</label>
-                        </td>
-                        <td class="td_right check">
-                            <input type="text" id="smsCode" name="smsCode" class="check" placeholder="请输入验证码">
-                            <a href="javaScript:void(0)" id="sendSmsCode">发送手机验证码</a>
-                        </td>
-                    </tr>
-                    <tr>
                     <td class="td_left">
                         <input type="checkbox" id="rememberPassword">
                     </td>
                         <td class="td_right check">
-                            <p>记住密码 <a style="margin-left: 100px">忘记密码</a></p>
-
+                            <p>记住密码 <a style="margin-left: 100px" href="#">忘记密码</a></p>
                         </td>
                     </tr>
                     <tr>
                         <td class="td_left">
                         </td>
                         <td class="td_right check">
-                            <input type="submit" class="submit" value="登录">
-                            <span id="msg" style="color: red;"></span>
+                            <input id="pwdLogin" type="submit" class="submit" value="登录">
+                            <span id="msg" style="color: red;">${resultInfo.message}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">
+                            <p>其他方式：</p>
+                        </td>
+                        <td class="td_right check">
+                            <a href="#">短信验证码登录</a>
                         </td>
                     </tr>
                 </table>

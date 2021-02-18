@@ -29,4 +29,13 @@ public interface UserDao {
      * @return 手机号是否存在
      */
     User findByTelephone(String telephone);
+
+    /**
+     * 用户名密码登录
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @return 是否登录成功
+     */
+    User pwdLogin(String username, String password);
 }

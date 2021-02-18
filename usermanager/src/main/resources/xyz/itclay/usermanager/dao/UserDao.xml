@@ -14,9 +14,17 @@
         from tb_user
         where telephone = #{telephone}
     </select>
-
+    <!--注册插入数据-->
     <insert id="save" parameterType="user">
-        insert into tb_user (username,telephone,password)
-        values (#{username},#{telephone},#{password})
+        insert into tb_user (username, telephone, password)
+        values (#{username}, #{telephone}, #{password})
     </insert>
+
+    <!--用户名密码登录-->
+    <select id="pwdLogin" parameterType="String" resultType="user">
+        select *
+        from tb_user
+        where username = #{username}
+          and password = #{password}
+    </select>
 </mapper>

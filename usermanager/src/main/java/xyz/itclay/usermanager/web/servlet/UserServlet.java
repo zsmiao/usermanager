@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 /**
@@ -123,5 +124,47 @@ public class UserServlet extends BaseServlet {
         //响应给客户端
         resp.setContentType("application/json;charset=utf-8");
         resp.getWriter().write(json);
+    }
+
+    /**
+     * 用户名密码登录
+     *
+     * @author ZhangSenmiao
+     * @date 2021/2/10 10:58
+     **/
+    public void pwdLogin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            Map<String, String[]> map = req.getParameterMap();
+            User user = new User();
+            BeanUtils.populate(user, map);
+            System.out.println(user.getUsername() + user.getPassword());
+            ResultInfo resultInfo = userService.pwdLogin(user.getUsername(), user.getPassword());
+
+            if (resultInfo.getSuccess()) {
+//                重定向到注册成功页面
+                resp.sendRedirect("/news/getNews");
+//                req.getRequestDispatcher("news/getNews").forward(req,resp);
+                req.getSession().setAttribute("user", resultInfo.getData());
+            } else {
+//                将注册信息放到域中，转发到注册页面
+                req.setAttribute("resultInfo", resultInfo);
+                req.getRequestDispatcher("/login.jsp").forward(req, resp);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 用户退出登录
+     *
+     * @author ZhangSenmiao
+     * @date 2021/2/10 20:16
+     **/
+    public void quit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        清除session缓存
+        req.getSession().removeAttribute("user");
+//        将页面重定向到登录登录页面
+        resp.sendRedirect("/login.jsp");
     }
 }

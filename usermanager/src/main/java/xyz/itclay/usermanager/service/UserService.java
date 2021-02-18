@@ -93,4 +93,24 @@ public class UserService {
             return new ResultInfo(false, "短信发送失败!");
         }
     }
+
+    /**
+     * @param username 用户名和密码
+     * @return resultInfo
+     */
+    public ResultInfo pwdLogin(String username, String password) {
+        //        创建接口代理对象
+        SqlSession sqlSession = MyBatisUtils.openSession();
+        UserDao userDao = sqlSession.getMapper(UserDao.class);
+        User byUsername = userDao.findByUsername(username);
+        MyBatisUtils.close(sqlSession);
+        if (byUsername == null) {
+            return new ResultInfo(false, "用户名不正确!");
+        }
+        if (!password.equals(byUsername.getPassword())) {
+            return new ResultInfo(false, "密码错误!");
+        }
+        return new ResultInfo(true, "登录成功!", byUsername);
+
+    }
 }

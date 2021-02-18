@@ -17,6 +17,7 @@
     </script>
   </head>
   <body>
+  <jsp:include page="header.jsp"></jsp:include>
   <div align="center">
   	<a
 	  href="list.jsp" style="text-decoration:none;font-size:33px">查询所有用户信息

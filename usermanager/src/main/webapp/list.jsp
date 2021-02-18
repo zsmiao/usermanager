@@ -27,6 +27,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="header.jsp"></jsp:include>
 <div class="container">
     <h3 style="text-align: center">用户信息列表</h3>
     <table border="1" class="table table-bordered table-hover">
