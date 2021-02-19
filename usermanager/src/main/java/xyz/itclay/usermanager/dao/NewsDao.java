@@ -13,12 +13,12 @@ import java.util.List;
 public interface NewsDao {
 
     /**
-     * @param pageNumber 页数
+     * @param startSize 页数
      * @param pageSize   每页数量
      * @return 新闻集合
      */
 
-    List<News> getNewList(Integer pageNumber, Integer pageSize);
+    List<News> getNewList(@Param("startSize") Integer startSize, @Param("pageSize") Integer pageSize,@Param("title") String title);
 
     void addNews(News news);
 
@@ -27,4 +27,6 @@ public interface NewsDao {
     News getNews(Integer newsId);
 
     void updateNews(@Param("id") Integer newsId, @Param("title") String newsTitle,@Param("content") String newsContent,@Param("type") String newsType);
+
+    int getCount();
 }

@@ -46,6 +46,16 @@ public class NewsServlet extends BaseServlet {
         }
     }
 
+
+    public void batchDeletion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String[] deleteIds = req.getParameterValues("deleteId");
+        for (String deleteId : deleteIds) {
+            Integer integer = Integer.valueOf(deleteId);
+            newsService.deleteNewsById(integer);
+        }
+        req.getRequestDispatcher("getNews").forward(req, resp);
+    }
+
     public void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Integer newsId = Integer.valueOf(req.getParameter("id"));
         News news = newsService.getNews(newsId);
@@ -67,9 +77,37 @@ public class NewsServlet extends BaseServlet {
     }
 
     public void getNews(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<News> newsList = newsService.getNewsList(1, 2);
-        req.setAttribute("newsList", newsList);
+        ResultInfo resultInfo=new ResultInfo();
+        String title = req.getParameter("title");
+        Integer pageNumber = 1;
+        //控制分页效果
+        String pageNumber1 = req.getParameter("pageNumber");
+        if (pageNumber1 != null) {
+            pageNumber = Integer.valueOf(pageNumber1);
+        }
+        if (pageNumber <= 1) {
+            pageNumber = 1;
+        }
+        //新闻总条数
+        int count = newsService.getCount();
+        Integer pageSize = 5;
 
+        int pageCount = count % pageSize == 0 ? count / pageSize : count / pageSize + 1;
+        if (pageNumber > pageCount) {
+            pageNumber = pageCount;
+        }
+        List<News> newsList = newsService.getNewsList(pageNumber, pageSize,title);
+        if (!(title == null)){
+            resultInfo.setSuccess(true);
+            resultInfo.setMessage("共查询到了"+newsList.size()+"条记录!");
+        }
+        req.setAttribute("resultInfo",resultInfo);
+        req.setAttribute("newsList", newsList);
+        req.setAttribute("count",count);
+        req.setAttribute("pageSize",pageSize);
+        req.setAttribute("pageNumber", pageNumber);
+        req.setAttribute("pageCount", pageCount);
         req.getRequestDispatcher("/main.jsp").forward(req, resp);
     }
+
 }

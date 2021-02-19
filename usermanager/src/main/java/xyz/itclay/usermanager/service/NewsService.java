@@ -19,13 +19,13 @@ import java.util.List;
  * @date 2021/2/18 18:32
  **/
 public class NewsService {
-    public List<News> getNewsList(Integer pageNumber, Integer pageSize) {
+    public List<News> getNewsList(Integer pageNumber, Integer pageSize,String title) {
         List<News> newsList = new ArrayList<>();
         News news = new News();
         SqlSession sqlSession = MyBatisUtils.openSession();
         NewsDao newsDao = sqlSession.getMapper(NewsDao.class);
-        //调用dao，查询username是否存在
-        newsList = newsDao.getNewList(pageNumber, pageSize);
+        int startSize = (pageNumber - 1) * pageSize;
+        newsList = newsDao.getNewList(startSize, pageSize,title);
         MyBatisUtils.close(sqlSession);
         return newsList;
     }
@@ -73,5 +73,13 @@ public class NewsService {
         newsDao.updateNews(newsId,newsTitle,newsContent,newsType);
         MyBatisUtils.close(sqlSession);
         return new ResultInfo(true,"修改成功!");
+    }
+
+    public int getCount() {
+        SqlSession sqlSession = MyBatisUtils.openSession();
+        NewsDao newsDao = sqlSession.getMapper(NewsDao.class);
+        int row=newsDao.getCount();
+        MyBatisUtils.close(sqlSession);
+        return row;
     }
 }

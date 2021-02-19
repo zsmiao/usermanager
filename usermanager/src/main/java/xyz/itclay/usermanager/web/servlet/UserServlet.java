@@ -9,6 +9,7 @@ import xyz.itclay.usermanager.utils.RandomCodeUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -137,10 +138,27 @@ public class UserServlet extends BaseServlet {
             Map<String, String[]> map = req.getParameterMap();
             User user = new User();
             BeanUtils.populate(user, map);
-            System.out.println(user.getUsername() + user.getPassword());
             ResultInfo resultInfo = userService.pwdLogin(user.getUsername(), user.getPassword());
 
             if (resultInfo.getSuccess()) {
+                Cookie cookieName=new Cookie("username", user.getUsername());
+                Cookie cookiePwd=new Cookie("pwd", user.getPassword());
+                //获取页面记住状态复选框的值
+                String ck = req.getParameter("ck");
+                if(ck!=null){
+                    //设置存活时间
+                    cookieName.setMaxAge(7*24*60*60);
+                    cookiePwd.setMaxAge(7*24*60*60);
+                }else {//不记住
+                    //设置存活时间
+                    cookieName.setMaxAge(0);
+                    cookiePwd.setMaxAge(0);
+                }
+                //设置cookie存储路径:设置在根路径，将来页面获取就不需要考虑存储的路径
+                cookieName.setPath("/");
+                cookiePwd.setPath("/");
+                resp.addCookie(cookieName);
+                resp.addCookie(cookiePwd);
 //                重定向到注册成功页面
                 resp.sendRedirect("/news/getNews");
 //                req.getRequestDispatcher("news/getNews").forward(req,resp);

@@ -18,6 +18,24 @@
             <p>USER LOGIN</p>
         </div>
         <div class="rg_form_center">
+            <%
+                //声明一个变量来接收用户名和密码
+                String name="";
+                String pwd="";
+                String cked ="";
+                Cookie[] cookies = request.getCookies();
+                if(cookies!=null){
+                    for (Cookie cookie : cookies) {
+                        if("username".equals(cookie.getName())){
+                            name=cookie.getValue();
+                            cked="checked";
+                        }
+                        if("pwd".equals(cookie.getName())){
+                            pwd=cookie.getValue();
+                        }
+                    }
+                }
+            %>
             <!--注册表单-->
             <form id="pwdLoginForm" action="${pageContext.request.contextPath}/user/pwdLogin" method="post">
                 <!--提交处理请求的标识符-->
@@ -28,7 +46,7 @@
                             <label for="username">用户名</label>
                         </td>
                         <td class="td_right">
-                            <input type="text" id="username" name="username" placeholder="请输入账号">
+                            <input type="text" id="username" name="username" placeholder="请输入账号" value="<%=name%>">
                             <span id="userInfo" style="font-size:10px"></span>
                         </td>
                     </tr>
@@ -37,12 +55,12 @@
                             <label for="password">密码</label>
                         </td>
                         <td class="td_right">
-                            <input type="password" id="password" name="password" placeholder="请输入密码">
+                            <input type="password" id="password" name="password" placeholder="请输入密码" value="<%=pwd%>">
                         </td>
                     </tr>
                     <tr>
                     <td class="td_left">
-                        <input type="checkbox" id="rememberPassword">
+                        <input type="checkbox" name="ck" <%=cked%>>
                     </td>
                         <td class="td_right check">
                             <p>记住密码 <a style="margin-left: 100px" href="#">忘记密码</a></p>

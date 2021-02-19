@@ -18,7 +18,6 @@ public class BaseServlet extends HttpServlet {
         String uri = req.getRequestURI();
 //        获取执行的方法名
         String substring = uri.substring(uri.lastIndexOf("/") + 1);
-        System.out.println(substring);
         try {
 //        获取Method对象
             Method method = this.getClass().getDeclaredMethod(substring, HttpServletRequest.class, HttpServletResponse.class);

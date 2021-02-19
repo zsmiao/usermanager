@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.itclay.usermanager.dao.NewsDao">
-    <select id="getNewList" parameterType="String" resultType="News">
+
+    <select id="getNewList" parameterType="Integer" resultType="News">
         select *
-        from news
+        from news where newstitle like '%${title}%'
+        limit ${startSize},${pageSize}
     </select>
+
     <insert id="addNews" parameterType="news">
         insert into news (newstitle, newsContent, newsStatus, newsType, createtime)
         values (#{newsTitle}, #{newsContent}, #{newsStatus}, #{newsType}, #{createTime})
     </insert>
+
     <delete id="deleteNewsById" parameterType="Integer">
         delete
         from news
         where newsid = #{newsId}
     </delete>
+
     <select id="getNews" parameterType="Integer" resultType="News">
         select *
         from news
         where newsid = #{newsId}
     </select>
+
     <update id="updateNews">
         update news
         set newstitle=#{title},
@@ -26,4 +32,9 @@
             newsType=#{type}
         where newsid = #{id}
     </update>
+
+    <select id="getCount" resultType="int">
+        select count(*)
+        from news
+    </select>
 </mapper>

@@ -112,7 +112,7 @@
                 </div>
                 <div class='panel-body'>
                     <div class="row">
-                        <form role="form">
+                        <form role="form" method="post" action="${pageContext.request.contextPath}/news/getNews">
                             <div class="col-sm-6 col-md-6 col-lg-4">
                                 <div class="form-group">
                                     <div class="input-group">
@@ -125,7 +125,7 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">标题内容</div>
-                                        <input type="text" class="form-control">
+                                        <input type="text" class="form-control" name="title">
                                     </div>
                                 </div>
 
@@ -172,6 +172,7 @@
                                 <hr class="mt5 mb15">
                                 <button type="submit" class="king-btn king-info">查询</button>
                                 <button type="submit" class="king-btn king-success">重置</button>
+                                <span style="color: red">${resultInfo.message}</span>
                             </div>
 
                         </form>
@@ -185,7 +186,7 @@
                 </div>
                 <div class='panel-body'>
 
-                    <form class="table-responsive" action="#" method="post">
+                    <form class="table-responsive" action="${pageContext.request.contextPath}/news/batchDeletion" method="post">
 
                         <table class="table table-bordered table-hover table-striped">
                             <button type="submit" class="king-btn king-success" style="margin-bottom: 15px">
@@ -194,9 +195,6 @@
                             <button type="button" class="king-btn king-success" onclick="changeForm()"
                                     style="margin-bottom: 15px">批量审核
                             </button>
-                            <%--    <input type="submit" value="批量删除"/>--%>
-                            <%--    <input type="button" value="批量审核" onclick="changeForm()"/>--%>
-                            <input type="hidden" id="oprate" name="oprate" value="batchDeletion">
                             <tr>
                                 <th><input type="checkbox" name="all" onclick="selectAll(this)"/></th>
                                 <th>文章ID</th>
@@ -215,7 +213,14 @@
                                     <td>${news.newsTitle}</td>
                                     <td>${news.newsType}</td>
                                     <td>${news.createTime}</td>
-                                    <td>${news.newsStatus}</td>
+                                    <c:choose>
+                                        <c:when test="${news.newsStatus=='未审核'}">
+                                            <td style="color:red">${news.newsStatus}</td>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <td style="color: limegreen">${news.newsStatus}</td>
+                                        </c:otherwise>
+                                    </c:choose>
                                     <td>
                                         <a href="${pageContext.request.contextPath}/news/update?id=${news.newsId}"> 编辑</a>
                                         |
@@ -224,15 +229,13 @@
                             </c:forEach>
                             <tr>
                                 <td colspan="7">
-                                    <div class="pagination-info pull-left">共4条记录，当前第1/1页，每页20条记录</div>
+                                    <div class="pagination-info pull-left">共${count}条记录，当前第${pageNumber}/${pageCount}页，每页${pageSize}条记录</div>
                                     <div class="pull-right king-page-box">
                                         <ul class="pagination pagination-small pull-right">
-                                            <li page-index="1" class="disabled"><a>«</a></li>
-                                            <li page-index="1" class="active"><a>1</a></li>
-                                            <li page-index="1"><a href="javascript:;">2</a></li>
-                                            <li page-index="1"><a href="javascript:;">3</a></li>
-                                            <li page-index="1"><a href="javascript:;">4</a></li>
-                                            <li page-index="1"><a href="javascript:;">»</a></li>
+                                            <li page-index="1"><a href="${pageContext.request.contextPath}/news/getNews?pageNumber=1">首页</a></li>
+                                            <li page-index="1"><a href="${pageContext.request.contextPath}/news/getNews?pageNumber=${pageNumber-1}">上一页</a></li>
+                                            <li page-index="1"><a href="${pageContext.request.contextPath}/news/getNews?pageNumber=${pageNumber+1}">下一页</a></li>
+                                            <li page-index="1"><a href="${pageContext.request.contextPath}/news/getNews?pageNumber=${pageCount}">尾页</a></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -241,13 +244,10 @@
                     </form>
                 </div>
             </div>
-
         </div>
         <!-- /.container-fluid -->
-
     </div>
     <!-- /#page-wrapper -->
-
 </div>
 <!-- /#wrapper -->
 
