@@ -6,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
     <meta charset="utf-8">
@@ -117,13 +116,12 @@
                 <div class="panel-body">
                     <div class="col-sm-8">
 
-                        <form class="form-horizontal mt15" id="user_form" action="${pageContext.request.contextPath}/news/updateNews" method="post">
-                            <input type="hidden" value="${news.newsId}" name="id"/>
+                        <form class="form-horizontal mt15" id="user_form" action="${pageContext.request.contextPath}/news/addNews" method="post">
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">文章标题：</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="请输入文章标题" id="newstitle"
-                                           name="newstitle" value="${news.newsTitle}">
+                                           name="newstitle">
                                     <span class="king-required-tip text-danger ml5">*</span>
                                 </div>
                             </div>
@@ -131,9 +129,9 @@
                                 <label class="col-sm-2 control-label">所属栏目：</label>
                                 <div class="col-sm-10">
                                     <select class="form-control" id="newstype" name="newstype">
-                                        <option <c:if test="${news.newsType==\"html\"}">selected</c:if> value="html">html</option>
-                                        <option <c:if test="${news.newsType==\"Javascript\"}">selected</c:if> value="Javascript">Javascript</option>
-                                        <option <c:if test="${news.newsType==\"oracle\"}">selected</c:if> value="oracle">oracle</option>
+                                        <option value="html">html</option>
+                                        <option value="html">java</option>
+                                        <option value="html">javascript</option>
                                     </select>
                                     <span class="king-required-tip text-danger ml5">*</span>
                                 </div>
@@ -141,7 +139,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">正文：</label>
                                 <div class="col-sm-10">
-                                    <textarea id="content" name="newscontent" rows="20">${news.newsContent}</textarea>
+                                    <textarea id="content" name="newscontent" rows="20"></textarea>
                                 </div>
 
                             </div>
@@ -149,8 +147,8 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label"></label>
                                 <div class="col-sm-10">
-                                    <button class="king-btn king-info mr10" title="修改" type="submit">
-                                        <i class="fa fa-save btn-icon"></i>确定修改
+                                    <button class="king-btn king-info mr10" title="保存" type="submit">
+                                        <i class="fa fa-save btn-icon"></i>保存
                                     </button>
                                     <a class="king-btn king-default" title="返回" href="${pageContext.request.contextPath}/news/getNews">
                                         <i class="fa fa-mail-reply-all btn-icon"></i>返回

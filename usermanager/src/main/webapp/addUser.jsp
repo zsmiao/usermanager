@@ -6,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
     <meta charset="utf-8">
@@ -23,25 +22,12 @@
         String path = request.getContextPath();
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/css/sb-admin.css";
         String basePath1 = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/css/sb-bk-theme.css";
-        String basePath2 = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/kindeditor-4.1.10/kindeditor.js";
     %>
     <link rel="stylesheet" href="<%=basePath%>">
     <link rel="stylesheet" href="<%=basePath1%>">
     <!--蓝鲸平台APP 公用的样式文件 -->
 
     <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
-
-
-    <script type="text/javascript" src="<%=basePath2%>"></script>
-    <script type="text/javascript">
-        KindEditor.ready(function (K) {
-            K.create('#content', {
-                uploadJson: 'kindeditor-4.1.10/jsp/upload_json.jsp',
-                fileManagerJson: 'kindeditor-4.1.10/jsp/file_manager_json.jsp',
-                allowFileManager: true
-            });
-        });
-    </script>
 </head>
 <body>
 <div id="wrapper">
@@ -104,7 +90,7 @@
         <div class="row page-header-box">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    新闻管理
+                    用户管理
                 </h1>
             </div>
         </div>
@@ -112,50 +98,103 @@
         <div class="main-wrap">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    新增新闻
+                    新增用户
                 </div>
                 <div class="panel-body">
                     <div class="col-sm-8">
 
-                        <form class="form-horizontal mt15" id="user_form" action="${pageContext.request.contextPath}/news/updateNews" method="post">
-                            <input type="hidden" value="${news.newsId}" name="id"/>
+                        <form class="form-horizontal mt15" id="user_form" action="#">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">文章标题：</label>
+                                <label class="col-sm-2 control-label">账号：</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" placeholder="请输入文章标题" id="newstitle"
-                                           name="newstitle" value="${news.newsTitle}">
+                                    <input type="text" class="form-control" placeholder="请填写帐号" id="user_account"
+                                           name="user_account">
                                     <span class="king-required-tip text-danger ml5">*</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">所属栏目：</label>
+                                <label class="col-sm-2 control-label">角色：</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control" id="newstype" name="newstype">
-                                        <option <c:if test="${news.newsType==\"html\"}">selected</c:if> value="html">html</option>
-                                        <option <c:if test="${news.newsType==\"Javascript\"}">selected</c:if> value="Javascript">Javascript</option>
-                                        <option <c:if test="${news.newsType==\"oracle\"}">selected</c:if> value="oracle">oracle</option>
+                                    <select class="form-control" id="user_role" name="user_role">
+                                        <option value="1">管理员</option>
+                                        <option value="2">运维用户</option>
+                                        <option value="3">数据录入员</option>
+                                        <option value="4">渠道用户</option>
                                     </select>
                                     <span class="king-required-tip text-danger ml5">*</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">正文：</label>
+                                <label class="col-sm-2 control-label">密码：</label>
                                 <div class="col-sm-10">
-                                    <textarea id="content" name="newscontent" rows="20">${news.newsContent}</textarea>
+                                    <input type="password" class="form-control" placeholder="请填写密码" id="user_password"
+                                           name="user_password">
+                                    <span class="king-required-tip text-danger ml5">*</span>
                                 </div>
-
+                                <div class="col-sm-1"></div>
                             </div>
-
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">确认密码：</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" placeholder="请填再次写密码"
+                                           id="user_password2" name="user_password2">
+                                    <span class="king-required-tip text-danger ml5">*</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">用户名：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" placeholder="请填写用户名" id="user_name"
+                                           name="user_name">
+                                    <span class="king-required-tip text-danger ml5">*</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">性别：</label>
+                                <div class="col-sm-10">
+                                    <div class="radio">
+                                        <label class="mr10">
+                                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"
+                                                   checked>男
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="optionsRadios2"
+                                                   value="option2">女
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">手机号码：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" placeholder="请填写手机号码" id="user_phone"
+                                           name="user_phone">
+                                    <span class="king-required-tip text-danger ml5">*</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">电子邮箱：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" placeholder="请填写电子邮箱" id="user_email"
+                                           name="user_email">
+                                    <span class="king-required-tip text-danger ml5">*</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">地址：</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" style="height:80px;" placeholder="请填写地址"></textarea>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label"></label>
                                 <div class="col-sm-10">
-                                    <button class="king-btn king-info mr10" title="修改" type="submit">
-                                        <i class="fa fa-save btn-icon"></i>确定修改
+                                    <button class="king-btn king-info mr10" title="保存" type="submit">
+                                        <i class="fa fa-save btn-icon"></i>保存
                                     </button>
-                                    <a class="king-btn king-default" title="返回" href="${pageContext.request.contextPath}/news/getNews">
+                                    <a class="king-btn king-default" title="返回">
                                         <i class="fa fa-mail-reply-all btn-icon"></i>返回
                                     </a>
-                                    <span>${message}</span>
                                 </div>
                             </div>
                         </form>
@@ -167,5 +206,6 @@
     <!-- /.container-fluid -->
 </div>
 </div>
+
 </body>
 </html>

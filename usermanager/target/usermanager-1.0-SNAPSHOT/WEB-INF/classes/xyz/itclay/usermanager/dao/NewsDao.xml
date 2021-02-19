@@ -2,6 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.itclay.usermanager.dao.NewsDao">
     <select id="getNewList" parameterType="String" resultType="News">
-            select * from news
+        select *
+        from news
     </select>
+    <insert id="addNews" parameterType="news">
+        insert into news (newstitle, newsContent, newsStatus, newsType, createtime)
+        values (#{newsTitle}, #{newsContent}, #{newsStatus}, #{newsType}, #{createTime})
+    </insert>
+    <delete id="deleteNewsById" parameterType="Integer">
+        delete
+        from news
+        where newsid = #{newsId}
+    </delete>
+    <select id="getNews" parameterType="Integer" resultType="News">
+        select *
+        from news
+        where newsid = #{newsId}
+    </select>
+    <update id="updateNews">
+        update news
+        set newstitle=#{title},
+            newsContent=#{content},
+            newsType=#{type}
+        where newsid = #{id}
+    </update>
 </mapper>
