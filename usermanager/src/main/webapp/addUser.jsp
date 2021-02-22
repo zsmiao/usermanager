@@ -53,7 +53,7 @@
                 <b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="javascript:;"><i class="fa fa-fw fa-user"></i> 用户</a>
+                    <a href="javascript:;"><i class="fa fa-fw fa-user"></i> 个人资料</a>
                 </li>
                 <li>
                     <a href="javascript:;"><i class="fa fa-fw fa-envelope"></i> 消息盒</a>
@@ -76,7 +76,7 @@
                 <a href="${pageContext.request.contextPath}/news/getNews"><i></i>新闻管理</a>
             </li>
             <li class="">
-                <a href="${pageContext.request.contextPath}/user.jsp">用户管理</a>
+                <a href="${pageContext.request.contextPath}/user/getUsers">用户管理</a>
             </li>
         </ul>
     </div>
@@ -103,7 +103,7 @@
                 <div class="panel-body">
                     <div class="col-sm-8">
 
-                        <form class="form-horizontal mt15" id="user_form" action="#">
+                        <form class="form-horizontal mt15" id="user_form" action="${pageContext.request.contextPath}/user/addUser" method="post">
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">账号：</label>
                                 <div class="col-sm-10">
@@ -116,10 +116,8 @@
                                 <label class="col-sm-2 control-label">角色：</label>
                                 <div class="col-sm-10">
                                     <select class="form-control" id="user_role" name="user_role">
-                                        <option value="1">管理员</option>
-                                        <option value="2">运维用户</option>
-                                        <option value="3">数据录入员</option>
-                                        <option value="4">渠道用户</option>
+                                        <option>管理员</option>
+                                        <option>普通用户</option>
                                     </select>
                                     <span class="king-required-tip text-danger ml5">*</span>
                                 </div>
@@ -142,9 +140,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">用户名：</label>
+                                <label class="col-sm-2 control-label">姓名：</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" placeholder="请填写用户名" id="user_name"
+                                    <input type="text" class="form-control" placeholder="请填写姓名" id="user_name"
                                            name="user_name">
                                     <span class="king-required-tip text-danger ml5">*</span>
                                 </div>
@@ -154,14 +152,22 @@
                                 <div class="col-sm-10">
                                     <div class="radio">
                                         <label class="mr10">
-                                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"
+                                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="男"
                                                    checked>男
                                         </label>
                                         <label>
                                             <input type="radio" name="optionsRadios" id="optionsRadios2"
-                                                   value="option2">女
+                                                   value="女">女
                                         </label>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">年龄：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" placeholder="请选择你的生日" id="user_birthday"
+                                           name="user_birthday">
+                                    <span class="king-required-tip text-danger ml5">*</span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -183,7 +189,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">地址：</label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" style="height:80px;" placeholder="请填写地址"></textarea>
+                                    <textarea class="form-control" style="height:60px;" placeholder="请填写地址" name="user_address"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -192,9 +198,10 @@
                                     <button class="king-btn king-info mr10" title="保存" type="submit">
                                         <i class="fa fa-save btn-icon"></i>保存
                                     </button>
-                                    <a class="king-btn king-default" title="返回">
+                                    <a class="king-btn king-default" title="返回" href="${pageContext.request.contextPath}/user/getUsers">
                                         <i class="fa fa-mail-reply-all btn-icon"></i>返回
                                     </a>
+                                    <span style="color: #4cae4c">${resultInfo.message}</span>
                                 </div>
                             </div>
                         </form>
@@ -206,6 +213,5 @@
     <!-- /.container-fluid -->
 </div>
 </div>
-
 </body>
 </html>

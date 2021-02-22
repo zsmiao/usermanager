@@ -4,7 +4,8 @@ import lombok.Data;
 
 /**
  * 封装注册返回的结果
- *属性：是否成功、提示信息、封装数据
+ * 属性：是否成功、提示信息、封装数据
+ *
  * @author ZhangSenmiao
  * @date 2021/2/7 14:30
  **/

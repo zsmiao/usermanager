@@ -7,6 +7,9 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 /**
  * 生产SQLSession的工具类
@@ -15,6 +18,9 @@ import java.io.InputStream;
  * @date 2021/2/7 13:49
  **/
 public class MyBatisUtils {
+    private MyBatisUtils() {
+    }
+
     private static SqlSessionFactory sqlSessionFactory = null;
 
     static {
@@ -43,5 +49,26 @@ public class MyBatisUtils {
             sqlSession.commit();
             sqlSession.close();
         }
+    }
+
+    /**
+     * 定义一个方法直接获取对应的mapper接口的代理对象
+     */
+    public static <T> T getMapper(Class<T> target) {
+//        获取session
+        SqlSession sqlSession = openSession();
+
+        T mapper = sqlSession.getMapper(target);
+       Object obj= Proxy.newProxyInstance(mapper.getClass().getClassLoader(), mapper.getClass().getInterfaces(), new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                Object obj=null;
+                obj= method.invoke(mapper, args);
+                sqlSession.commit();
+                sqlSession.close();
+                return obj;
+            }
+        });
+        return (T) obj;
     }
 }

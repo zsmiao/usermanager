@@ -1,5 +1,6 @@
 package xyz.itclay.usermanager.service;
 
+import com.github.pagehelper.PageHelper;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import org.apache.ibatis.session.SqlSession;
 import xyz.itclay.usermanager.dao.UserDao;
@@ -9,13 +10,15 @@ import xyz.itclay.usermanager.utils.Md5Utils;
 import xyz.itclay.usermanager.utils.MyBatisUtils;
 import xyz.itclay.usermanager.utils.SendSmsUtils;
 
+import java.util.List;
+
 /**
  * @author ZhangSenmiao
  * @date 2021/2/7 14:33
  **/
 public class UserService {
     /**
-     * 注册
+     * 用户注册
      *
      * @param user 用户信息
      * @return 封装了注册结果的信息
@@ -65,6 +68,12 @@ public class UserService {
         }
     }
 
+    /**
+     * 验证手机号是否存在
+     *
+     * @author ZhangSenmiao
+     * @date 2021/2/21 20:09
+     **/
     public ResultInfo findByTelePhone(String telephone) {
         //        创建接口代理对象
         SqlSession sqlSession = MyBatisUtils.openSession();
@@ -80,6 +89,8 @@ public class UserService {
     }
 
     /**
+     * 发送短信验证码
+     *
      * @param telephone    手机号
      * @param randomNumber 验证码
      * @return resultInfo
@@ -95,6 +106,8 @@ public class UserService {
     }
 
     /**
+     * 密码登录
+     *
      * @param username 用户名和密码
      * @return resultInfo
      */
@@ -112,5 +125,59 @@ public class UserService {
         }
         return new ResultInfo(true, "登录成功!", byUsername);
 
+    }
+
+    /**
+     * 查询所有用户信息
+     *
+     * @author ZhangSenmiao
+     * @date 2021/2/21 9:44
+     **/
+    public List<User> getUsers(int pageNumber, int pageSize ,User user) {
+        //        创建接口代理对象
+        SqlSession sqlSession = MyBatisUtils.openSession();
+        UserDao userDao = sqlSession.getMapper(UserDao.class);
+        PageHelper.startPage(pageNumber, pageSize);
+        List<User> users = userDao.getUsers(user);
+        MyBatisUtils.close(sqlSession);
+        return users;
+    }
+
+    /**
+     * 管理员添加用户
+     *
+     * @author ZhangSenmiao
+     * @date 2021/2/21 20:10
+     **/
+    public ResultInfo addUser(User user) {
+        SqlSession sqlSession = MyBatisUtils.openSession();
+        UserDao userDao = sqlSession.getMapper(UserDao.class);
+        userDao.addUser(user);
+        MyBatisUtils.close(sqlSession);
+        return new ResultInfo(true, "添加成功!");
+    }
+
+    /**
+     * 修改用户信息
+     *
+     * @author ZhangSenmiao
+     * @date 2021/2/22 9:23
+     **/
+    public ResultInfo updateUser(User user) {
+        UserDao userDao = MyBatisUtils.getMapper(UserDao.class);
+        userDao.updateUser(user);
+        return new ResultInfo(true, "修改用户信息成功!");
+    }
+
+    /**
+     * 删除用户信息
+     *
+     * @author ZhangSenmiao
+     * @date 2021/2/22 9:47
+     **/
+    public ResultInfo deleteUserById(Integer id) {
+        UserDao userDao = MyBatisUtils.getMapper(UserDao.class);
+        int row=userDao.deleteUserById(id);
+        return new ResultInfo(true,"成功删除 "+row+"条记录!");
     }
 }

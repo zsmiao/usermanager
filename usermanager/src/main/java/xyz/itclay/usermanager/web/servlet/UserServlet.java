@@ -1,6 +1,7 @@
 package xyz.itclay.usermanager.web.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.beanutils.BeanUtils;
 import xyz.itclay.usermanager.domain.ResultInfo;
 import xyz.itclay.usermanager.domain.User;
@@ -13,8 +14,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author ZhangSenmiao
@@ -69,8 +69,7 @@ public class UserServlet extends BaseServlet {
     public void findByUsername(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        获取请求参数
         String username = req.getParameter("username");
-        System.out.println(username);
-        if (username != null) {
+        if (username != null & !Objects.equals(username, "")) {
 //        调用service，校验用户名是否存在，返回resultInfo
             ResultInfo resultInfo = userService.findByUsername(username);
             //将resultInfo转为json
@@ -141,15 +140,15 @@ public class UserServlet extends BaseServlet {
             ResultInfo resultInfo = userService.pwdLogin(user.getUsername(), user.getPassword());
 
             if (resultInfo.getSuccess()) {
-                Cookie cookieName=new Cookie("username", user.getUsername());
-                Cookie cookiePwd=new Cookie("pwd", user.getPassword());
+                Cookie cookieName = new Cookie("username", user.getUsername());
+                Cookie cookiePwd = new Cookie("pwd", user.getPassword());
                 //获取页面记住状态复选框的值
                 String ck = req.getParameter("ck");
-                if(ck!=null){
+                if (ck != null) {
                     //设置存活时间
-                    cookieName.setMaxAge(7*24*60*60);
-                    cookiePwd.setMaxAge(7*24*60*60);
-                }else {//不记住
+                    cookieName.setMaxAge(7 * 24 * 60 * 60);
+                    cookiePwd.setMaxAge(7 * 24 * 60 * 60);
+                } else {//不记住
                     //设置存活时间
                     cookieName.setMaxAge(0);
                     cookiePwd.setMaxAge(0);
@@ -185,4 +184,116 @@ public class UserServlet extends BaseServlet {
 //        将页面重定向到登录登录页面
         resp.sendRedirect("/login.jsp");
     }
+
+    /**
+     * 查询所有用户信息
+     *
+     * @author ZhangSenmiao
+     * @date 2021/2/21 9:40
+     **/
+    public void getUsers(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //调用service查询用户信息
+        int pageNumber = 1;
+        //控制分页效果
+        String pageNumber1 = req.getParameter("pageNumber");
+        if (pageNumber1 != null) {
+            pageNumber = Integer.parseInt(pageNumber1);
+        }
+        if (pageNumber <= 1) {
+            pageNumber = 1;
+        }
+        int pageSize = 10;
+        String name = req.getParameter("name");
+        String username = req.getParameter("username");
+        String status = req.getParameter("status");
+        User user=new User();
+        user.setName(name);
+        user.setUsername(username);
+        List<User> users = userService.getUsers(pageNumber, pageSize,user);
+        PageInfo<User> userPageInfo = new PageInfo<User>(users);
+        req.setAttribute("userPageInfo", userPageInfo);
+        req.getRequestDispatcher("/user.jsp").forward(req, resp);
+    }
+
+    /**
+     * 添加用户
+     *
+     * @author ZhangSenmiao
+     * @date 2021/2/21 19:04
+     **/
+    public void addUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        User user = new User();
+        Enumeration<String> parameterNames = req.getParameterNames();
+        ArrayList<String> values = new ArrayList<String>();
+        while (parameterNames.hasMoreElements()) {
+//            得到名字
+            String name = parameterNames.nextElement();
+            String parameter = req.getParameter(name);
+            values.add(parameter);
+        }
+        user.setUsername(values.get(0));
+        user.setRole(values.get(1));
+        user.setPassword(values.get(3));
+        user.setName(values.get(4));
+        user.setSex(values.get(5));
+        user.setAge(Integer.valueOf(values.get(6)));
+        user.setTelephone(values.get(7));
+        user.setEmail(values.get(8));
+        user.setAddress(values.get(9));
+        ResultInfo resultInfo = userService.addUser(user);
+        if (resultInfo.getSuccess()) {
+            req.setAttribute("resultInfo", resultInfo);
+            req.getRequestDispatcher("/addUser.jsp").forward(req, resp);
+        }
+    }
+
+    /**
+     * 修改用户信息
+     *
+     * @author ZhangSenmiao
+     * @date 2021/2/22 9:13
+     **/
+    public void updateUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        User user = new User();
+        ArrayList<String> list = new ArrayList<>();
+        Enumeration<String> parameterNames = req.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            String name = parameterNames.nextElement();
+            String parameter = req.getParameter(name);
+            list.add(parameter);
+        }
+        user.setId(Integer.valueOf(list.get(0)));
+        user.setUsername(list.get(1));
+        user.setRole(list.get(2));
+        user.setPassword(list.get(4));
+        user.setName(list.get(5));
+        user.setSex(list.get(6));
+        user.setAge(Integer.valueOf(list.get(7)));
+        user.setTelephone(list.get(8));
+        user.setEmail(list.get(9));
+        user.setAddress(list.get(10));
+        ResultInfo resultInfo = userService.updateUser(user);
+        if (resultInfo.getSuccess()) {
+            req.setAttribute("resultInfo", resultInfo);
+            req.getRequestDispatcher("/addUser.jsp").forward(req, resp);
+        }
+    }
+
+    /**
+     * 删除用户信息
+     *
+     * @author ZhangSenmiao
+     * @date 2021/2/22 9:40
+     **/
+    public void deleteUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = req.getParameter("id");
+        ResultInfo resultInfo = userService.deleteUserById(Integer.valueOf(id));
+        if (resultInfo.getSuccess()) {
+            req.setAttribute("resultInfo", resultInfo);
+//            resp.sendRedirect("/user/getUsers");
+            req.getRequestDispatcher("getUsers").forward(req,resp);
+        }
+    }
+
+
 }

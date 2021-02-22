@@ -18,5 +18,4 @@ public class News implements Serializable {
     private String newsStatus;
     private String newsType;
     private String createTime;
-
 }

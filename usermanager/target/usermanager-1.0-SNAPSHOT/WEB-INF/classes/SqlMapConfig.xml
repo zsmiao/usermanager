@@ -3,21 +3,34 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <!--    加载外部配置文件-->
-    <properties resource="jdbc.properties"/>
-    <!--    配置类型别名-->
+    <!--加载外部配置文件-->
+    <properties resource="jdbc.properties" />
+    <!--配置类型别名-->
+    <settings>
+        <!--mybatis日志-->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <!--全局延迟加载配置-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+    </settings>
     <typeAliases>
         <package name="xyz.itclay.usermanager.domain"/>
     </typeAliases>
+    <!--    配置PageHelper插件-->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!--指定使用的数据库-->
+            <property name="dialectHelper" value="mysql"/>
+        </plugin>
+    </plugins>
     <!--    环境配置-->
     <environments default="mysql">
         <environment id="mysql">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
-                <property name="driver" value="${driver}"/>
-                <property name="url" value="${url}"/>
-                <property name="username" value="${username}"/>
-                <property name="password" value="${password}"/>
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
             </dataSource>
         </environment>
     </environments>

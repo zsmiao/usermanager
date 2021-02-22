@@ -53,7 +53,7 @@
                 <b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="javascript:;"><i class="fa fa-fw fa-user"></i> 个人资料</a>
+                    <a href="updateUser.jsp"><i class="fa fa-fw fa-user"></i> 个人资料</a>
                 </li>
                 <li>
                     <a href="javascript:;"><i class="fa fa-fw fa-envelope"></i> 消息盒</a>
@@ -98,17 +98,18 @@
         <div class="main-wrap">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    新增用户
+                    修改个人资料
                 </div>
                 <div class="panel-body">
                     <div class="col-sm-8">
 
-                        <form class="form-horizontal mt15" id="user_form" action="${pageContext.request.contextPath}/user/addUser" method="post">
+                        <form class="form-horizontal mt15" id="user_form" action="${pageContext.request.contextPath}/user/updateUser" method="post">
+                            <input type="hidden" name="id" value=${user.id}>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">账号：</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="请填写帐号" id="user_account"
-                                           name="user_account">
+                                           name="user_account" value=${user.username}>
                                     <span class="king-required-tip text-danger ml5">*</span>
                                 </div>
                             </div>
@@ -116,8 +117,7 @@
                                 <label class="col-sm-2 control-label">角色：</label>
                                 <div class="col-sm-10">
                                     <select class="form-control" id="user_role" name="user_role">
-                                        <option>管理员</option>
-                                        <option>普通用户</option>
+                                        <option>${user.role}</option>
                                     </select>
                                     <span class="king-required-tip text-danger ml5">*</span>
                                 </div>
@@ -143,7 +143,7 @@
                                 <label class="col-sm-2 control-label">姓名：</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="请填写姓名" id="user_name"
-                                           name="user_name">
+                                           name="user_name" value=${user.name}>
                                     <span class="king-required-tip text-danger ml5">*</span>
                                 </div>
                             </div>
@@ -166,7 +166,7 @@
                                 <label class="col-sm-2 control-label">年龄：</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="请选择你的生日" id="user_birthday"
-                                           name="user_birthday">
+                                           name="user_birthday" value=${user.age}>
                                     <span class="king-required-tip text-danger ml5">*</span>
                                 </div>
                             </div>
@@ -174,7 +174,7 @@
                                 <label class="col-sm-2 control-label">手机号码：</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="请填写手机号码" id="user_phone"
-                                           name="user_phone">
+                                           name="user_phone" value=${user.telephone}>
                                     <span class="king-required-tip text-danger ml5">*</span>
                                 </div>
                             </div>
@@ -182,21 +182,21 @@
                                 <label class="col-sm-2 control-label">电子邮箱：</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="请填写电子邮箱" id="user_email"
-                                           name="user_email">
+                                           name="user_email" value=${user.email}>
                                     <span class="king-required-tip text-danger ml5">*</span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">地址：</label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" style="height:60px;" placeholder="请填写地址" name="user_address"></textarea>
+                                    <textarea class="form-control" style="height:60px;" placeholder="请填写地址" name="user_address">${user.address}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label"></label>
                                 <div class="col-sm-10">
                                     <button class="king-btn king-info mr10" title="保存" type="submit">
-                                        <i class="fa fa-save btn-icon"></i>保存
+                                        <i class="fa fa-save btn-icon"></i>修改
                                     </button>
                                     <a class="king-btn king-default" title="返回" href="${pageContext.request.contextPath}/user/getUsers">
                                         <i class="fa fa-mail-reply-all btn-icon"></i>返回

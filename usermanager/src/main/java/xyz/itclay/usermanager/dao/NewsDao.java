@@ -1,6 +1,7 @@
 package xyz.itclay.usermanager.dao;
 
 import org.apache.ibatis.annotations.Param;
+import xyz.itclay.usermanager.domain.CheckNews;
 import xyz.itclay.usermanager.domain.News;
 import xyz.itclay.usermanager.domain.ResultInfo;
 
@@ -13,12 +14,10 @@ import java.util.List;
 public interface NewsDao {
 
     /**
-     * @param startSize 页数
-     * @param pageSize   每页数量
      * @return 新闻集合
      */
 
-    List<News> getNewList(@Param("startSize") Integer startSize, @Param("pageSize") Integer pageSize,@Param("title") String title);
+    List<News> getNewList(CheckNews checkNews);
 
     void addNews(News news);
 

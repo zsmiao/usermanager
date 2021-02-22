@@ -27,4 +27,18 @@
         where username = #{username}
           and password = #{password}
     </select>
+
+    <!--    查询所有用户SELECT * from tb_user WHERE `name` LIKE '%测%' AND username LIKE '%1%'-->
+    <select id="getUsers" parameterType="user" resultType="user">
+        select *
+        from tb_user
+        <where>
+            <if test="name!=null in name!=''">
+                name like '%${name}%'
+            </if>
+            <if test="username!=null in username!=''">
+                and username like '%${username}%'
+            </if>
+        </where>
+    </select>
 </mapper>

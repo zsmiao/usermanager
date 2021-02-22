@@ -24,6 +24,19 @@
     <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
     <!-- 以下两个插件用于在IE8以及以下版本浏览器支持HTML5元素和媒体查询，如果不需要用可以移除 -->
     <![endif]-->
+<%--    <script>--%>
+<%--        function deleteUserById(id) {--%>
+<%--            let url = '/user/deleteUser';--%>
+<%--            let data = 'id=' + id;--%>
+<%--            $.post(url, data, function (resp) {--%>
+<%--                if (resp.success == false && resp.message!=null) {--%>
+<%--                    $("#msg").html("<font color='red'>" + resp.message);--%>
+<%--                } else {--%>
+<%--                    $("#msg").html("<font color='green'>" + resp.message);--%>
+<%--                }--%>
+<%--            });--%>
+<%--        }--%>
+<%--    </script>--%>
 </head>
 <body>
 <div id="wrapper">
@@ -45,7 +58,8 @@
         <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav">
             <li class="dropdown">
-                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> ${user.name}
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><i
+                        class="fa fa-user"></i> ${user.name}
                     <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li>
@@ -69,10 +83,10 @@
             <ul class="nav navbar-nav side-nav">
 
                 <li class="">
-                    <a href="${pageContext.request.contextPath}/main.jsp"><i></i>新闻管理</a>
+                    <a href="${pageContext.request.contextPath}/news/getNews"><i></i>新闻管理</a>
                 </li>
                 <li class="">
-                    <a href="${pageContext.request.contextPath}/user.jsp">用户管理</a>
+                    <a href="${pageContext.request.contextPath}/user/getUsers">用户管理</a>
                 </li>
             </ul>
         </div>
@@ -98,29 +112,32 @@
                 </div>
                 <div>
                     <div class="king-wrapper">
-                        <form class="form-inline king-search-form king-no-bg mt15 mb15 pull-left">
+                        <form class="form-inline king-search-form king-no-bg mt15 mb15 pull-left" method="post" action="${pageContext.request.contextPath}/user/getUsers">
                             <div class="form-group">
-                                <label>用户账号：</label>
+                                <label>用户姓名：</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="请输入用户账号">
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-time fa fa-calendar-o"></i></span>
+                                    <input type="text" class="form-control" placeholder="请输入姓名" name="name">
+                                    <span class="input-group-addon"><i
+                                            class="glyphicon glyphicon-time fa fa-calendar-o"></i></span>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label>用户名：</label>
+                                <label>用户账号：</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="请输入用户账号">
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-time fa fa-calendar-o"></i></span>
+                                    <input type="text" class="form-control" placeholder="请输入用户名" name="username">
+                                    <span class="input-group-addon"><i
+                                            class="glyphicon glyphicon-time fa fa-calendar-o"></i></span>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label>状态：</label>
                                 <div class="input-group">
-                                    <select class="form-control">
-                                        <option value="1">待审核</option>
-                                        <option value="2">全部</option>
+                                    <select class="form-control" name="status">
+                                        <option value="1">全部</option>
+                                        <option value="2">正常</option>
+                                        <option value="3">异常</option>
                                     </select>
                                 </div>
                             </div>
@@ -128,9 +145,10 @@
                             <button type="submit" class="king-btn king-info">搜索</button>
                         </form>
                         <a type="button" id="transferID" class="king-btn king-success pull-right mt15 ml15">
-                            <i class="fa fa-gavel mr5"></i>审核
+                            <i class="fa fa-gavel mr5"></i>删除
                         </a>
-                        <a href="${pageContext.request.contextPath}/addUser.jsp" class="king-btn king-info pull-right mt15 ml15">
+                        <a href="${pageContext.request.contextPath}/addUser.jsp"
+                           class="king-btn king-info pull-right mt15 ml15">
                             <i class="fa fa-user-plus mr5"></i>新增用户
                         </a>
                     </div>
@@ -142,166 +160,73 @@
                                 <input type="checkbox" class="del-all-cb">
                             </th>
                             <th style="width:50px;">序号</th>
-                            <th>用户账号</th>
+                            <th>姓名</th>
                             <th>角色</th>
                             <th>用户名</th>
                             <th>性别</th>
-                            <th>邮箱</th>
-                            <th>手机号</th>
+                            <th>年龄</th>
                             <th>地区</th>
+                            <th>邮件</th>
+                            <th>电话</th>
                             <th>注册时间</th>
                             <th>状态</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="del-cb">
-                            </td>
-                            <td>1</td>
-                            <td>admin</td>
-                            <td>系统管理员</td>
-                            <td>admin</td>
-                            <td>男</td>
-                            <td>123344@gamil.com</td>
-                            <td>13502569874</td>
-                            <td>广东省-广州市</td>
-                            <td>2015-06-07 21:45</td>
-                            <td><span class="text-warning fb">待审核</span></td>
-                            <td>
-                                <a href="#" class="mr15">编辑</a>
-                                <a href="#">已审核</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="del-cb">
-                            </td>
-                            <td>1</td>
-                            <td>admin</td>
-                            <td>系统管理员</td>
-                            <td>admin</td>
-                            <td>男</td>
-                            <td>123344@gamil.com</td>
-                            <td>13502569874</td>
-                            <td>广东省-广州市</td>
-                            <td>2015-06-07 21:45</td>
-                            <td><span class="text-success fb">审核通过</span></td>
-                            <td>
-                                <a href="#" class="mr15">编辑</a>
-                                <a href="#">已审核</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="del-cb">
-                            </td>
-                            <td>1</td>
-                            <td>admin</td>
-                            <td>系统管理员</td>
-                            <td>admin</td>
-                            <td>男</td>
-                            <td>123344@gamil.com</td>
-                            <td>13502569874</td>
-                            <td>广东省-广州市</td>
-                            <td>2015-06-07 21:45</td>
-                            <td><span class="text-warning fb">待审核</span></td>
-                            <td>
-                                <a href="#" class="mr15">编辑</a>
-                                <a href="#">已审核</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="del-cb">
-                            </td>
-                            <td>1</td>
-                            <td>admin</td>
-                            <td>系统管理员</td>
-                            <td>admin</td>
-                            <td>男</td>
-                            <td>123344@gamil.com</td>
-                            <td>13502569874</td>
-                            <td>广东省-广州市</td>
-                            <td>2015-06-07 21:45</td>
-                            <td><span class="text-success fb">审核通过</span></td>
-                            <td>
-                                <a href="#" class="mr15">编辑</a>
-                                <a href="#">已审核</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="del-cb">
-                            </td>
-                            <td>1</td>
-                            <td>admin</td>
-                            <td>系统管理员</td>
-                            <td>admin</td>
-                            <td>男</td>
-                            <td>123344@gamil.com</td>
-                            <td>13502569874</td>
-                            <td>广东省-广州市</td>
-                            <td>2015-06-07 21:45</td>
-                            <td><span class="text-success fb">审核通过</span></td>
-                            <td>
-                                <a href="#" class="mr15">编辑</a>
-                                <a href="#">已审核</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="del-cb">
-                            </td>
-                            <td>1</td>
-                            <td>admin</td>
-                            <td>系统管理员</td>
-                            <td>admin</td>
-                            <td>男</td>
-                            <td>123344@gamil.com</td>
-                            <td>13502569874</td>
-                            <td>广东省-广州市</td>
-                            <td>2015-06-07 21:45</td>
-                            <td><span class="text-success fb">审核通过</span></td>
-                            <td>
-                                <a href="#" class="mr15">编辑</a>
-                                <a href="#">已审核</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="del-cb">
-                            </td>
-                            <td>1</td>
-                            <td>admin</td>
-                            <td>系统管理员</td>
-                            <td>admin</td>
-                            <td>男</td>
-                            <td>123344@gamil.com</td>
-                            <td>13502569874</td>
-                            <td>广东省-广州市</td>
-                            <td>2015-06-07 21:45</td>
-                            <td><span class="text-warning fb">待审核</span></td>
-                            <td>
-                                <a href="#" class="mr15">编辑</a>
-                                <a href="#">已审核</a>
-                            </td>
-                        </tr>
+                        <%--@elvariable id="userPageInfo" type="java.util.List"--%>
+                        <c:forEach items="${userPageInfo.list}" var="users">
+                            <tr>
+                                <td><input type="checkbox" name="deleteId" value="${users.id}"/></td>
+                                <td>${users.id}</td>
+                                <td>${users.name}</td>
+                                <td>管理员</td>
+                                <td>${users.username}</td>
+                                <td>${users.sex}</td>
+                                <td>${users.age}</td>
+                                <td>${users.address}</td>
+                                <td>${users.email}</td>
+                                <td>${users.telephone}</td>
+                                <td>2020-02-21 08:52</td>
+                                <td style="color: #4cae4c">正常</td>
+                                    <%-- <c:choose>
+                                         <c:when test="${users.newsStatus=='正常'}">
+                                             <td style="color:red">异常</td>
+                                         </c:when>
+                                         <c:otherwise>
+                                             <td style="color: limegreen">正常</td>
+                                         </c:otherwise>
+                                     </c:choose>--%>
+                                <td>
+                                    <a href="${pageContext.request.contextPath}/updateUser.jsp"> 编辑</a>
+                                    |
+                                    <a href="${pageContext.request.contextPath}/user/deleteUser?id=${users.id}" id="deleteUserById">删除</a>
+                                </td>
+                            </tr>
+                        </c:forEach>
                         </tbody>
                         <tfoot>
                         <tr>
-                            <td colspan="12">
-                                <div class="pagination-info pull-left">共4条记录，当前第1/1页，每页20条记录</div>
+                            <td colspan="13">
+                                <div class="pagination-info pull-left">
+                                    共${userPageInfo.total}条记录，当前第${userPageInfo.pageNum}/${userPageInfo.pages}页，每页${userPageInfo.pageSize}条记录
+                                    <span style="color: #4cae4c" >${resultInfo.message}</span>
+                                </div>
                                 <div class="pull-right king-page-box">
 
                                     <ul class="pagination pagination-small pull-right">
-                                        <li page-index="1" class="disabled"><a>«</a></li>
-                                        <li page-index="1" class="active"><a>1</a></li>
-                                        <li page-index="1"><a href="javascript:;">2</a></li>
-                                        <li page-index="1"><a href="javascript:;">3</a></li>
-                                        <li page-index="1"><a href="javascript:;">4</a></li>
-                                        <li page-index="1"><a href="javascript:;">»</a></li>
+                                        <li page-index="1"><a
+                                                href="${pageContext.request.contextPath}/user/getUsers?pageNumber=1">首页</a>
+                                        </li>
+                                        <li page-index="1"><a
+                                                href="${pageContext.request.contextPath}/user/getUsers?pageNumber=${userPageInfo.prePage}">上一页</a>
+                                        </li>
+                                        <li page-index="1"><a
+                                                href="${pageContext.request.contextPath}/user/getUsers?pageNumber=${userPageInfo.nextPage}">下一页</a>
+                                        </li>
+                                        <li page-index="1"><a
+                                                href="${pageContext.request.contextPath}/user/getUsers?pageNumber=${userPageInfo.pages}">尾页</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </td>
@@ -314,11 +239,14 @@
         <!-- /.container-fluid -->
     </div>
     <!-- /#page-wrapper -->
+
 </div>
+
 <!-- /#wrapper -->
 <!-- 如果要使用Bootstrap的js插件，必须先调入jQuery -->
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
 <!-- 包括所有bootstrap的js插件或者可以根据需要使用的js插件调用　-->
 <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+
 </body>
 </html>

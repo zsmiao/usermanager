@@ -36,8 +36,6 @@
             document.getElementById("oprate").value = "batchReview";
             document.forms[0].submit();
         }
-
-
     </script>
 </head>
 <body>
@@ -65,7 +63,7 @@
                     <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="javascript:;"><i class="fa fa-fw fa-user"></i> 用户</a>
+                        <a href="${pageContext.request.contextPath}/updateUser.jsp"><i class="fa fa-fw fa-user"></i> 个人资料</a>
                     </li>
                     <li>
                         <a href="javascript:;"><i class="fa fa-fw fa-envelope"></i> 消息盒</a>
@@ -88,7 +86,7 @@
                     <a href="${pageContext.request.contextPath}/news/getNews"><i></i>新闻管理</a>
                 </li>
                 <li class="">
-                    <a href="${pageContext.request.contextPath}/user.jsp">用户管理</a>
+                    <a href="${pageContext.request.contextPath}/user/getUsers">用户管理</a>
                 </li>
             </ul>
         </div>
@@ -117,7 +115,7 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">文章ID</div>
-                                        <input class="form-control" type="email">
+                                        <input class="form-control" type="text" name="id" >
                                     </div>
                                 </div>
                             </div>
@@ -134,10 +132,11 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">状态</div>
-                                        <select class="form-control">
-                                            <option value="1">待审核</option>
-                                            <option value="2">全部</option>
-                                        </select>
+                                            <select class="form-control" name="status">
+                                                <option value="null" selected="selected">全部</option>
+                                                <option value="未审核">未审核</option>
+                                                <option value="已审核">已审核</option>
+                                            </select>
                                     </div>
                                 </div>
                             </div>
@@ -145,7 +144,7 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">开始时间</div>
-                                        <input type="datetime-local" class="form-control">
+                                        <input type="date" class="form-control" name="startTime">
                                     </div>
                                 </div>
                             </div>
@@ -153,9 +152,10 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">所属栏目</div>
-                                        <select class="form-control">
-                                            <option value="1">html</option>
-                                            <option value="2">java</option>
+                                        <select class="form-control" name="type">
+                                            <option value="html">html</option>
+                                            <option value="java">java</option>
+                                            <option value="javascript">javascript</option>
                                         </select>
                                     </div>
                                 </div>
@@ -164,7 +164,7 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">结束时间</div>
-                                        <input type="datetime-local" class="form-control">
+                                        <input type="date" class="form-control" name="endTime">
                                     </div>
                                 </div>
                             </div>
@@ -172,7 +172,6 @@
                                 <hr class="mt5 mb15">
                                 <button type="submit" class="king-btn king-info">查询</button>
                                 <button type="submit" class="king-btn king-success">重置</button>
-                                <span style="color: red">${resultInfo.message}</span>
                             </div>
 
                         </form>
@@ -229,7 +228,7 @@
                             </c:forEach>
                             <tr>
                                 <td colspan="7">
-                                    <div class="pagination-info pull-left">共${count}条记录，当前第${pageNumber}/${pageCount}页，每页${pageSize}条记录</div>
+                                    <div class="pagination-info pull-left">总共${count}条记录，当前第${pageNumber}/${pageCount}页，</div>
                                     <div class="pull-right king-page-box">
                                         <ul class="pagination pagination-small pull-right">
                                             <li page-index="1"><a href="${pageContext.request.contextPath}/news/getNews?pageNumber=1">首页</a></li>
@@ -238,6 +237,7 @@
                                             <li page-index="1"><a href="${pageContext.request.contextPath}/news/getNews?pageNumber=${pageCount}">尾页</a></li>
                                         </ul>
                                     </div>
+                                    <span style="color: red">${resultInfo.message}</span>
                                 </td>
                             </tr>
                         </table>

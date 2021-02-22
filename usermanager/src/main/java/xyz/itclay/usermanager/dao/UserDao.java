@@ -1,6 +1,11 @@
 package xyz.itclay.usermanager.dao;
 
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Update;
 import xyz.itclay.usermanager.domain.User;
+import org.apache.ibatis.annotations.Insert;
+
+import java.util.List;
 
 /**
  * @author ZhangSenmiao
@@ -15,7 +20,7 @@ public interface UserDao {
     void save(User user);
 
     /**
-     * 根绝用户名查询用户
+     * 根据用户名查询用户
      *
      * @param username 用户名
      * @return 是否存在
@@ -38,4 +43,50 @@ public interface UserDao {
      * @return 是否登录成功
      */
     User pwdLogin(String username, String password);
+
+    /**
+     * 查询所有用户
+     * @param user 用户信息
+     * @return 用户集合
+     */
+    List<User> getUsers(User user);
+
+    /**
+     * 添加用户
+     *
+     * @author ZhangSenmiao
+     * @date 2021/2/21 20:12
+     **/
+    @Insert("insert into tb_user(name,username,password,sex,age,address,email,telephone,role) " +
+            "values (#{name},#{username},#{password},#{sex},#{age},#{address},#{email},#{telephone},#{role})")
+    void addUser(User user);
+
+    /**
+     * 修改用户信息
+     *
+     * @author ZhangSenmiao
+     * @date 2021/2/22 9:26
+     **/
+    @Update("update tb_user\n" +
+            "        set name=#{name},\n" +
+            "            username=#{username},\n" +
+            "            password=#{password},\n" +
+            "            sex=#{sex},\n" +
+            "            age=#{age},\n" +
+            "            address=#{address},\n" +
+            "            email=#{email},\n" +
+            "            telephone=#{role}\n" +
+            "        where id = #{id}")
+    void updateUser(User user);
+
+    /**
+     * 根据用户Id删除用户数据
+     *
+     * @author ZhangSenmiao
+     * @date 2021/2/22 9:51
+     **/
+    @Delete("delete\n" +
+            "        from tb_user\n" +
+            "        where id = #{id}")
+    int deleteUserById(Integer id);
 }
