@@ -10,20 +10,27 @@
 <body>
 
 <div style="text-align:center;height: 290px;margin-top: 50px">
-    <span style="font-size: 30px">恭喜您，注册成功！</span>
-    <div><span style="color: red;font-size: 16px" id=jump></span></div>
+    <span style="font-size: 30px;margin-top: 80px">恭喜您，注册成功！</span>
+    <div>
+        <span style="color: red;font-size: 18px" id=jump></span>
+    </div>
 </div>
+</body>
 <script>
-    var t = 5;//设定跳转的时间
-    setInterval("refer()", 1000); //启动1秒定时
+    //设定跳转的时间
+    let t = 5;
+    //启动1秒定时
+    setInterval("refer()", 1000);
+
     function refer() {
-        if (t == 0) {
-            location = "index.jsp"; //#设定跳转的链接地址
+        if (t === 0) {
+            //#设定跳转的链接地址
+            location.href = "index.jsp";
         }
-        document.getElementById('jump').innerHTML = "" + t + "秒后跳转到首页"; // 显示倒计时
-        t--; // 计数器递减
-        //本文转自：
+        // 显示倒计时
+        document.getElementById('jump').innerHTML = t + "秒后跳转到首页";
+        // 计数器递减
+        t--;
     }
 </script>
-</body>
 </html>

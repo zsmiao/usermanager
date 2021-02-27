@@ -2,6 +2,7 @@ package xyz.itclay.usermanager.web.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
+import lombok.extern.log4j.Log4j;
 import org.apache.commons.beanutils.BeanUtils;
 import xyz.itclay.usermanager.domain.ResultInfo;
 import xyz.itclay.usermanager.domain.User;
@@ -294,6 +295,5 @@ public class UserServlet extends BaseServlet {
             req.getRequestDispatcher("getUsers").forward(req,resp);
         }
     }
-
 
 }

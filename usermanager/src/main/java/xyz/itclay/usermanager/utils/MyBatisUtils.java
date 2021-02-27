@@ -59,11 +59,11 @@ public class MyBatisUtils {
         SqlSession sqlSession = openSession();
 
         T mapper = sqlSession.getMapper(target);
-       Object obj= Proxy.newProxyInstance(mapper.getClass().getClassLoader(), mapper.getClass().getInterfaces(), new InvocationHandler() {
+        Object obj = Proxy.newProxyInstance(mapper.getClass().getClassLoader(), mapper.getClass().getInterfaces(), new InvocationHandler() {
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                Object obj=null;
-                obj= method.invoke(mapper, args);
+                Object obj = null;
+                obj = method.invoke(mapper, args);
                 sqlSession.commit();
                 sqlSession.close();
                 return obj;

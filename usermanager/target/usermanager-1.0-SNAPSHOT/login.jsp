@@ -89,7 +89,7 @@
         <div class="rg_form_right">
             <p>
                 没有账号？
-                <a href="register.jsp">立即注册</a>
+                <a href="register_ok.jsp">立即注册</a>
             </p>
         </div>
     </div>

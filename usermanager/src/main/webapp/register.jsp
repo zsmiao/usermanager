@@ -113,7 +113,7 @@
                         </td>
                         <td class="td_right check">
                             <input type="text" id="smsCode" name="smsCode" class="check" placeholder="请输入验证码"
-                                   required="required">
+                                   >
                             <a href="javaScript:void(0)" id="sendSmsCode">发送手机验证码</a>
                         </td>
                     </tr>

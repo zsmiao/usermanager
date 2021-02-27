@@ -1,6 +1,7 @@
 package xyz.itclay.usermanager.dao;
 
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Update;
 import xyz.itclay.usermanager.domain.User;
 import org.apache.ibatis.annotations.Insert;
@@ -57,6 +58,7 @@ public interface UserDao {
      * @author ZhangSenmiao
      * @date 2021/2/21 20:12
      **/
+    @Options(keyColumn = "id",keyProperty = "id",useGeneratedKeys = true)
     @Insert("insert into tb_user(name,username,password,sex,age,address,email,telephone,role) " +
             "values (#{name},#{username},#{password},#{sex},#{age},#{address},#{email},#{telephone},#{role})")
     void addUser(User user);

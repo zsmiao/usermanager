@@ -78,6 +78,15 @@
             <li class="">
                 <a href="${pageContext.request.contextPath}/user/getUsers">用户管理</a>
             </li>
+            <li class="">
+                <a href="${pageContext.request.contextPath}/system/systemInfo"><i></i>服务器监控</a>
+            </li>
+            <li class="">
+                <a href="">数据源监控</a>
+            </li>
+            <li class="">
+                <a href="">在线用户监控</a>
+            </li>
         </ul>
     </div>
     <!-- /.navbar-collapse -->

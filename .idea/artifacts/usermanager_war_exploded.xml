@@ -38,6 +38,10 @@
           <element id="library" level="project" name="Maven: javax.xml.bind:jaxb-api:2.3.0" />
           <element id="library" level="project" name="Maven: com.github.pagehelper:pagehelper:5.1.8" />
           <element id="library" level="project" name="Maven: com.github.jsqlparser:jsqlparser:1.2" />
+          <element id="library" level="project" name="Maven: com.github.oshi:oshi-core:3.9.1" />
+          <element id="library" level="project" name="Maven: net.java.dev.jna:jna-platform:4.5.2" />
+          <element id="library" level="project" name="Maven: net.java.dev.jna:jna:4.5.2" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.25" />
         </element>
       </element>
       <element id="directory" name="META-INF">
